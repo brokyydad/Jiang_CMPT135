@@ -1,0 +1,56 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+char* toUpper1(const char* str)
+{
+    int length=0;
+    for(int i=0;str[i]!='\0';i++)
+    {
+        length++;
+    }
+    char *result = new char[length+1];
+    
+    for(int i=0;i<length;i++)
+    {
+        if(str[i]>='a'&&str[i]<='z')
+        {
+            result[i]=str[i]-32;
+        }
+        else
+        {
+            result[i]=str[i];
+        }
+    }
+    result[length+1]='\0';
+    return result;
+
+}
+
+void toUpper2(string &str)
+{
+    int length = str.length();
+    for(int i=0;i<length;i++)
+    {
+        if(str[i]>='a' && str[i]<='z')
+        {
+            str[i] = str[i]-32;
+        }
+    }
+}
+
+int main()
+{
+    const char* str="How are you?";
+    char* result=toUpper1(str);
+    
+    cout<<result<<endl;
+    delete[] result;
+    
+    
+    string str2="How are you?";
+    toUpper2(str2);
+    cout<<str2<<endl;
+    
+    
+    return 0;
+}
