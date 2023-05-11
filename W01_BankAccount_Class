@@ -1,0 +1,82 @@
+#include <iostream>
+using namespace std;
+
+// the following is the BankAccount class we defined in class
+class BankAccount
+{
+public:
+    // constructors: their job is to initialize member variables when the object is constructed
+    BankAccount (int initialAcctNum, double initBalance); // parameterized constructor
+    BankAccount ();    // default constructor (no-argument)
+
+    // getter functions / accessers
+    int getAcctNum () { return accountNum; }
+    double getBalance () { return balance; }
+
+    // setter functions / mutators
+    // -- If you think it is not reasonable for BankAccounts to provide these services, you don't have to include them
+    void setAcctNum (int acctNum) { accountNum = acctNum; }
+    void setBalance (double newBalance) { balance = newBalance; }
+
+    // other service functions that can be provided by BankAccount instances
+    void deposit (double amount);
+    void withdraw (double);
+
+private:
+    // member variables
+    int accountNum;
+    double balance;
+};
+
+BankAccount::BankAccount(int initialAcctNum, double initBalance)
+{
+    accountNum = initialAcctNum;
+    balance = initBalance;
+}
+BankAccount::BankAccount()
+{
+    accountNum = 1000;
+    balance = 0;
+}
+
+void BankAccount::deposit(double amount)
+{
+    balance += amount;
+}
+
+void BankAccount::withdraw(double amount)
+{
+    if (amount <= balance)
+        balance -= amount;
+}
+
+// The following is a NON-MEMBER function that transfers the amount of money from acctA to acctB.
+// Question: what if we remove the operator & from the parameter list?
+void transfer (BankAccount& acctA, BankAccount& acctB, double amount)
+{
+    if ( amount <= acctA.getBalance())
+    {
+        acctA.withdraw(amount);
+        acctB.deposit(amount);
+    }
+}
+
+// Some testing code:
+int main()
+{
+    BankAccount mary; // the default constructor is called
+    mary.setAcctNum (2222);
+    BankAccount john (1111, 10.5);
+    cout << john.getBalance() << endl;
+    cout << mary.getBalance() << endl;
+
+    john.deposit(500);
+    cout << john.getBalance() << endl;
+    transfer (john, mary, 20.5);
+    transfer (john, mary, 100);
+    cout << john.getBalance() << endl;
+    cout << mary.getBalance() << endl;
+    
+    system("pause");
+    return 0;
+}
