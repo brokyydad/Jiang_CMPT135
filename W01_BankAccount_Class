@@ -80,3 +80,22 @@ int main()
     system("pause");
     return 0;
 }
+
+//test main function from lab using the non default constructor to set values instead of using setter.
+
+int main()
+{
+    srand(0);
+    BankAccount lotsOfAcc[10];
+    for(int i=0;i<10;i++)
+    {
+        int balance=rand()%91+10;
+        lotsOfAcc[i]= BankAccount(1000+i,balance);// really important
+        
+        cout<<lotsOfAcc[i].getAcctNum()<<" "<<lotsOfAcc[i].getBalance()<<endl;
+    }
+    
+    system("pause");
+    return 0;
+}
+
