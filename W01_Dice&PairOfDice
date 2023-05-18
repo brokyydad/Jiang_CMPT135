@@ -1,0 +1,129 @@
+// CMPT135 J.Ye
+
+// This is the starting file for Week 2 Exercise 1 Question 3
+// Die class definition and partial implementation is provided
+// You need to complete the class implementation and the main function as required in the exercise
+
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+class Die // Represents a 6-face die object
+{
+public:
+
+    Die(); // initialize the die's face value to be 1
+
+    int roll(); // roll the die and returns the resulted face value
+
+    int getFaceValue();
+    
+    int getFaceDown();
+    
+    void setFaceValue(int value);
+    // if the value is valid (between 1 and 6), set the face value to be the value
+    // otherwise, do nothing
+
+private:
+    int faceValue;    // stores the current face value of the die
+};
+
+class PairOfDie
+{
+public:
+    void rollPairOfDie();
+    
+    int sumOfDices();
+    
+    int getDice1Value();
+    
+    int getDice2Value();
+    
+private:
+    Die dice1, dice2;
+};
+
+// Complete the implementation of the Die class. Member function roll is already provided as follows:
+
+int Die::roll()
+{
+    // faceValue is randomly generated between 1 and 6
+    faceValue = rand() % 6 + 1;
+    return faceValue;
+}
+
+void Die:: setFaceValue(int FV)
+{
+    if(FV>=1&&FV<=6)
+        faceValue=FV;
+}
+// Complete the main function as required in the exercise
+Die:: Die()
+{
+    setFaceValue(1);
+}
+
+int Die::getFaceValue()
+{
+    return faceValue;
+}
+
+int Die::getFaceDown()
+{
+    int upper=getFaceValue();
+    int bottom=7-upper;
+    return bottom;
+}
+
+void PairOfDie::rollPairOfDie()
+{
+    dice1.roll();
+    dice2.roll();
+}
+
+int PairOfDie:: sumOfDices()
+{
+    int result=0;
+    result=dice1.getFaceValue()+dice2.getFaceValue();
+    
+    return result;
+}
+
+int PairOfDie:: getDice1Value()
+{
+    int result=dice1.getFaceValue();
+    return result;
+}
+int PairOfDie::getDice2Value()
+{
+    int result=dice2.getFaceValue();
+    return result;
+}
+int main()
+{
+    srand(time(0)); // Keep this statement
+    
+    int count=0;
+    Die dice[3];
+    
+    while(dice[0].getFaceValue()!=5 || dice[1].getFaceValue()!=5 || dice[2].getFaceValue()!=5)
+    {
+        for(int i=0;i<3;i++)
+        {
+            int FV=dice[i].roll();
+        }
+        count++;
+    }
+    cout<<count<<endl;
+    cout<<"///////////////////"<<endl;
+    
+    PairOfDie dices;
+    dices.rollPairOfDie();
+    cout<<dices.getDice1Value()<<" "<<dices.getDice2Value()<<endl;
+    cout<<dices.sumOfDices()<<endl;;
+   
+    
+
+    system ("pause");
+    return 0;
+}
