@@ -1,0 +1,66 @@
+#include<iostream>
+using namespace std;
+
+class Fraction
+{
+public:
+	Fraction(int num);
+	Fraction();
+	Fraction(int num1, int num2);
+	void output();
+	bool equal(int num2);
+	void simplify();
+private:
+	int num1, num2;
+};
+
+Fraction::Fraction(int num)
+{
+	num1 = 1;
+	num2 = num;
+}
+
+Fraction::Fraction()
+{
+	num1 = num2 = 0;
+}
+
+Fraction::Fraction(int numa, int numb)
+{
+	num1 = numa;
+	num2 = numb;
+}
+
+void Fraction::output()
+{
+	cout << num1 << "/" << num2;
+}
+
+bool Fraction::equal(int numb)
+{
+
+}
+
+int main()
+{
+	Fraction num1(3), num2(6), num3, num4;
+	num3 = Fraction(4, 12);
+	num4 = Fraction(2, 12);
+	cout << "num1 is ";
+	num1.output();
+	cout << "num2 is ";
+	num2.output();
+	cout << "num3 is ";
+	num3.output();
+	cout << "num4 is ";
+	num4.output();
+	if (num1.equal(num2))
+		cout << "num1 and num2 are equal!" << endl;
+
+	num3.simplify();
+	cout << "After simplifying, num3 is ";
+	num3.output();
+	if (num2.equal(num4))
+		cout << "num2 and num4 are equal!" << endl;
+	return 0;
+}
