@@ -1,0 +1,40 @@
+#include<iostream>
+using namespace std;
+
+class Triangle
+{
+public:
+    Triangle();
+    Triangle(double, double, double); // to initialize the sides
+    
+    void displayType()
+    {
+        if(s1==s2==s3)
+            cout<<"equilateral"<<endl;
+        else if(s1==s2||s2==s3||s1==s3)
+            cout<<"isosceles"<<endl;
+        else
+            cout<<"scalene"<<endl;
+    }
+double getPerimeter() const; // returns the perimeter of this triangle
+private:
+    double s1; // side1
+    double s2; // side2
+    double s3; // side3
+};
+
+Triangle maxPerimeter(Triangle t[],int size)
+{
+    int longest=0;
+    int index;
+    for(int i=0;i<size;i++)
+    {
+        int temp=t[i].getPerimeter() const;
+        if(temp>longest)
+        {
+            longest=temp;
+            index=i;
+        }
+    }
+    return t[index];
+}
