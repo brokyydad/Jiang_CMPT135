@@ -1,0 +1,264 @@
+#include <iostream>
+
+using namespace std;
+
+
+
+class Polynomial
+{
+public:
+    //big3
+    Polynomial();
+    Polynomial(double* arr, int size);
+    Polynomial(double newDouble);
+    Polynomial(const Polynomial& newPolynomial);
+    ~Polynomial();
+    //overload
+    double& operator[] (int index) const;
+    Polynomial& operator=(const double arr[]);
+
+    friend ostream& operator<< (ostream& returns, Polynomial& p);
+
+    //member function
+    int getSize();
+    double evaluate(double d);
+
+    //overload +-*
+    Polynomial operator+(const Polynomial& next);
+    Polynomial operator-(const Polynomial& next);
+    Polynomial operator*(const Polynomial& next);
+
+private:
+    int size;
+    double* arr;
+};
+
+Polynomial::Polynomial()
+{
+    size = 1;
+    arr = new double[0];
+    arr[0] = 0;
+}
+
+Polynomial::Polynomial(double* newarr, int newsize)
+{
+    size = newsize;
+    arr = new double[size];
+    for (int i = 0; i < size; i++)
+    {
+        arr[i] = newarr[i];
+    }
+}
+
+Polynomial::Polynomial(double newDouble)
+{
+    arr = new double[1];
+    size = 1;
+    arr[0] = newDouble;
+}
+Polynomial::Polynomial(const Polynomial& newPolynomial)
+{
+    size = newPolynomial.size;
+    arr = new double[size];
+    for (int i = 0; i < size; i++)
+    {
+        arr[i] = newPolynomial.arr[i];
+    }
+}
+
+Polynomial:: ~Polynomial()
+{
+    delete[] arr;
+}
+
+double& Polynomial:: operator[] (int index) const
+{
+    return arr[index];
+}
+
+Polynomial& Polynomial::operator=(const double arr[])
+{
+    delete[] this->arr;
+    int arrSize = 0;
+    while (arr[arrSize] != '\0') {
+        arrSize++;
+    }
+
+    size = arrSize;
+    this->arr = new double[size];
+    for (int i = 0; i < size; i++) {
+        this->arr[i] = arr[i];
+    }
+    return *this;
+}
+
+ostream& operator<< (ostream& returns, Polynomial& p)
+{
+
+    for (int i = 0; i < p.size; i++)
+    {
+        if (p.size == 1)
+        {
+            returns << " " << p.arr[i];
+            break;
+        }
+        else if (i == 0)
+        {
+            if (p.arr[i] != 0)
+                returns << " " << p.arr[i] << " +";
+        }
+        else if (i != p.size - 1)
+        {
+            if (p.arr[i] != 0)
+                returns << " " << p.arr[i] << "x^" << i << " +";
+        }
+        else
+        {
+            if (p.arr[i] != 0)
+                returns << " " << p.arr[i] << "x^" << i;
+        }
+    }
+    return returns;
+}
+
+int Polynomial::getSize()
+{
+    return size;
+}
+
+double Polynomial::evaluate(double base)
+{
+    double result = 0.0;
+    for (int i = 0; i <= size; i++)
+    {
+        if (i == 0)
+            result = result + arr[i];
+        else
+            result = result + arr[i] * pow(base, i);
+    }
+
+    return result;
+}
+
+Polynomial Polynomial::operator+(const Polynomial& next)
+{
+    int len;
+    if (size < next.size)
+    {
+        len = next.size;
+    }
+    else
+        len = size;
+    Polynomial result;
+    result.size = len;
+    result.arr = new double[len];
+    for (int i = 0; i < len; i++)
+    {
+        if (i >= size)
+            arr[i] = 0;
+        if (i >= next.size)
+            next.arr[i] = 0;
+        result.arr[i] = arr[i] + next.arr[i];
+    }
+    return result;
+}
+
+Polynomial Polynomial::operator-(const Polynomial& next)
+{
+    int len;
+    if (size < next.size)
+    {
+        len = next.size;
+    }
+    else
+        len = size;
+    Polynomial result;
+    result.size = len;
+    result.arr = new double[len];
+    for (int i = 0; i < len; i++)
+    {
+        if (i >= size)
+            arr[i] = 0;
+        if (i >= next.size)
+            next.arr[i] = 0;
+        result.arr[i] = arr[i] - next.arr[i];
+    }
+    return result;
+}
+
+Polynomial Polynomial::operator*(const Polynomial& next)
+{
+    Polynomial result;
+    result.size = (size - 1) + (next.size - 1) + 1 ;
+    result.arr = new double[result.size];
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < next.size; j++)
+        {
+            result.arr[i + j] = arr[i] * next.arr[j] + result.arr[i + j];
+        }
+    }
+    return result;
+}
+
+int main()
+{
+    cout << "testing Polynomial class:\n";
+    Polynomial empty;
+    cout << "Empty polynomial is " << empty << endl << endl;
+
+    double one[] = { 1 };
+    Polynomial One(one, 1);
+    double quad[] = { 3, 2, 1 };
+    double five[] = { 1, 2, 4, 3.2, 5 };
+    Polynomial q(quad, 3);  // q is 3 + 2*x + x*x
+    Polynomial c(five, 5);
+
+    cout << "Polynomial One is:  " << One << endl << endl;
+    cout << "Polynomial q is:  " << q << endl << endl;
+    cout << "Polynomial c is:  " << c << endl << endl;
+
+    q[1] = 8.2;
+    cout << "After q[1] = 8.2, q is:  " << q << endl << endl;
+
+    Polynomial p = q;
+    cout << "Ater  Polynomial p = q , polynomial p is:  " << p << endl << endl;
+    q[1] = 0.5;
+    cout << "Now, polynomial p is still:  " << p << endl << endl;
+
+    Polynomial r;
+    r = q = c;
+    c[0] = 100;
+    cout << "After r = q = c, polynomial r is:  " << r << endl;
+    cout << "After r = q = c, polynomial q is:  " << q << endl;
+
+    cout << "Polynomial c:" << endl;
+    for (int i = 0; i < 5; i++)
+        cout << "   term with degree " << i << " has coefficient " << c[i] << endl;
+
+    cout << endl << "value of p(3.5) is " << p.evaluate(3.5) << endl;
+    cout << "value of r(2) is " << r.evaluate(2) << endl;
+
+    r = q + r;
+    cout << endl << "After r = q + r, polynomial r is:  " << r << endl;
+    cout << "value of r(2) is " << r.evaluate(2) << endl << endl;
+
+    r = One - q;
+    cout << "value of (One - q)(2) is " << r.evaluate(2) << endl << endl;
+
+    r = q * c;
+    cout << "size of q*c is " << r.getSize() << endl;
+    cout << "Polynomial q is:  " << q << endl;
+    cout << "Polynomial c is:  " << c << endl;
+    cout << "Polynomial r (= q*c) is:  " << r << endl << endl;
+
+    cout << "value of r(2) is " << r.evaluate(2) << endl << endl;
+
+
+    /*cout << "q - 5 makes polynomial  " << q - 5 << endl << endl;
+    cout << "5 * q makes polynomial  " << 5 * q << endl << endl;
+    cout << "q - 5 makes polynomial  " << q - 5 << endl << endl;*/
+
+    system("pause");
+    return 0;
+}
